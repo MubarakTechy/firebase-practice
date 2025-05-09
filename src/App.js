@@ -35,7 +35,7 @@ function App() {
           }
         />
         <Route
-          path="/blog/:id"
+          path="/blog/:slug"
           element={
             <ProtectedRoute>
               <SingleBlog />
@@ -60,6 +60,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+      path="/blog/:id"
+      element={
+        <ProtectedRoute>
+          <SingleBlog />
+        </ProtectedRoute>
+      }
+    />
+
         <Route
           path="/admin/manage"
           element={

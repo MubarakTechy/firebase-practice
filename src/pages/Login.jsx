@@ -4,14 +4,13 @@ import {
   signInWithPopup,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
-import { auth, provider } from '../firebase/config';
+import { auth, provider } from '../firebase/firebasee';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  // Google login
   const handleGoogleLogin = async () => {
     try {
       await signInWithPopup(auth, provider);
@@ -22,11 +21,11 @@ export default function Login() {
     }
   };
 
-  // Email/password login
   const handleEmailLogin = async (e) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      localStorage.setItem('authToken', userCredential.user.accessToken);
       navigate('/blogs');
     } catch (error) {
       console.error(error);
@@ -34,13 +33,16 @@ export default function Login() {
     }
   };
 
+  const inputClass =
+    'mt-1 w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition';
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
         <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Welcome Back</h1>
-        
+
         {/* Email/Password Login Form */}
-        <div onSubmit={handleEmailLogin} className="space-y-4">
+        <form onSubmit={handleEmailLogin} className="space-y-4">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Email
@@ -49,12 +51,13 @@ export default function Login() {
               id="email"
               type="email"
               placeholder="Enter your email"
-              className="mt-1 w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+              className={inputClass}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
+
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
               Password
@@ -63,19 +66,20 @@ export default function Login() {
               id="password"
               type="password"
               placeholder="Enter your password"
-              className="mt-1 w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+              className={inputClass}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
+
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            className="w-full bg-[#1d1d1d] text-white p-3 rounded-md hover:bg-[#220b0b] focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
           >
             Login with Email
           </button>
-        </div>
+        </form>
 
         {/* Divider */}
         <div className="flex items-center my-6">
@@ -87,7 +91,7 @@ export default function Login() {
         {/* Google Sign-In */}
         <button
           onClick={handleGoogleLogin}
-          className="w-full bg-white text-gray-700 p-3 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-500 transition flex items-center justify-center gap-2"
+          className="w-full bg-[#1d1d1d] text-white p-3 border border-gray-300 rounded-md hover:bg-[#200c0c] focus:outline-none focus:ring-2 focus:ring-purple-500 transition flex items-center justify-center gap-2"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24">
             <path
@@ -114,12 +118,12 @@ export default function Login() {
         <div className="text-center mt-6 space-y-2">
           <p className="text-sm text-gray-600">
             Don't have an account?{' '}
-            <Link to="/signup" className="text-blue-600 hover:underline font-medium">
+            <Link to="/signup" className="text-[#1d1d1d] hover:underline font-medium">
               Sign up
             </Link>
           </p>
           <p className="text-sm text-gray-600">
-            <Link to="/reset" className="text-blue-600 hover:underline font-medium">
+            <Link to="/reset" className="text-red-600 hover:underline font-medium">
               Forgot password?
             </Link>
           </p>

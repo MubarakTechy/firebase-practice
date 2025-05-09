@@ -31,6 +31,7 @@ export default function BlogDetails() {
     <div className="min-h-screen bg-gray-100">
       <Navbar />
       <div className="max-w-3xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <img src={blog?.imgUrl} alt="" />
         <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">{blog.title}</h1>
         <div className="bg-white shadow-lg rounded-lg p-6">
           <p className="text-gray-600">{blog.content}</p>

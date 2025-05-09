@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, LayoutDashboard, FileText, Settings, Users, LogOut } from 'lucide-react';
 import { signOut } from 'firebase/auth';
-import { auth } from '../firebase/config';
+// import { db } from '../firebase/firebasee'; 
+import { auth } from '../firebase/firebasee';
 import { useNavigate } from 'react-router-dom';
 
 export default function AdminSidebar() {
@@ -72,9 +73,9 @@ export default function AdminSidebar() {
                   <Link
                     to={item.path}
                     className={`flex items-center p-2 rounded-lg transition-colors
-                              ${location.pathname === item.path 
-                                ? 'bg-red-600 text-white' 
-                                : 'text-gray-300 hover:bg-gray-700'}`}
+                      ${location.pathname === item.path 
+                        ? 'bg-red-600 text-white' 
+                        : 'text-gray-300 hover:bg-gray-700'}`}
                   >
                     <span className="mr-3">{item.icon}</span>
                     <span className={`${!isOpen && 'lg:hidden'}`}>{item.title}</span>

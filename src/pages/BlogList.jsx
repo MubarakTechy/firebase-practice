@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../firebase/config';
+import { db } from '../firebase/firebasee';
 import Navbar from '../../src/Component/Navbar';
 import { Link } from 'react-router-dom';
 
@@ -52,7 +52,7 @@ export default function BlogList() {
                     {blog.content?.substring(0, 100) || 'No content available'}...
                   </p>
                   <Link
-                    to={`/blog/${blog.id}`}
+                    to={`/blog/${blog.slug || blog.id}`}
                     className="text-red-600 hover:text-red-800 font-semibold text-sm"
                   >
                     Read More →

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { updateProfile, updateEmail, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth';
-import { auth } from '../../firebase/config';
+import { auth } from '../../firebase/firebasee';
 import { Navigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import AdminSidebar from '../../Component/AdminSidebar';

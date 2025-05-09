@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { collection, getDocs, deleteDoc, doc, orderBy, query } from 'firebase/firestore';
-import { db, auth } from '../../firebase/config';
+import { db, auth } from '../../firebase/firebasee';
 import { Navigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import AdminSidebar from '../../Component/AdminSidebar';

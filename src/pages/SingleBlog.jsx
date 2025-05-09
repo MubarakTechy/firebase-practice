@@ -1,52 +1,52 @@
-import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../firebase/config';
-import Navbar from '../Component/Navbar';
+import { useEffect, useState } from 'react';
+import { doc, query, where, getDocs, collection } from 'firebase/firestore';
+import { db } from '../firebase/firebasee';
 
 export default function SingleBlog() {
-  const { id } = useParams();
+  const { slug } = useParams();
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const docRef = doc(db, 'blogs', id);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setBlog({ id: docSnap.id, ...docSnap.data() });
+        const q = query(collection(db, 'blogs'), where('slug', '==', slug));
+        const querySnapshot = await getDocs(q);
+    
+        if (!querySnapshot.empty) {
+          setBlog(querySnapshot.docs[0].data());
         } else {
-          console.log('No such blog!');
+          setBlog(null);
         }
       } catch (error) {
-        console.error('Error fetching blog:', error);
+        console.error("Failed to fetch blog:", error);
+        setBlog(null);
       } finally {
         setLoading(false);
       }
     };
 
     fetchBlog();
-  }, [id]);
+  }, [slug]);
 
-  if (loading) return <div className="text-center py-16 text-xl">Loading...</div>;
+  if (loading) {
+    return <div className="text-center mt-10 text-gray-500">Loading blog...</div>;
+  }
 
-  if (!blog) return <div className="text-center py-16 text-xl">Blog not found.</div>;
+  if (!blog) {
+    return <div className="text-center mt-10 text-gray-500">Blog not found</div>;
+  }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <Navbar />
-      <div className="max-w-4xl mx-auto px-4 py-12">
-        <h1 className="text-4xl font-bold text-gray-800 mb-4">{blog.title}</h1>
-        {blog.imageUrl && (
-          <img
-            src={blog.imageUrl}
-            alt={blog.title}
-            className="w-full h-80 object-cover rounded-lg mb-6"
-          />
-        )}
-        <p className="text-gray-700 leading-relaxed text-lg">{blog.content}</p>
-      </div>
+    <div className="max-w-3xl mx-auto p-6">
+      <img
+        src={blog.imgUrl}
+        alt={blog.title || 'Blog cover image'}
+        className="w-full h-auto mb-6 rounded-md"
+      />
+      <h1 className="text-3xl font-bold text-gray-800 mb-4">{blog.title}</h1>
+      <p className="text-gray-700 leading-relaxed whitespace-pre-line">{blog.content}</p>
     </div>
   );
 }

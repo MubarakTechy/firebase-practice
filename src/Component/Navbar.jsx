@@ -1,5 +1,5 @@
 import { signOut } from 'firebase/auth';
-import { auth } from '../firebase/config';
+import { auth } from '../firebase/firebasee';
 import { useNavigate, Link } from 'react-router-dom';
 
 export default function Navbar() {
@@ -7,6 +7,7 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     await signOut(auth);
+    localStorage.removeItem("authToken")
     navigate('/');
   };
 
@@ -14,11 +15,9 @@ export default function Navbar() {
     <nav className="bg-white shadow-md px-6 py-4 flex items-center justify-between">
       <div className="flex items-center space-x-4">
         <Link to="/" className="text-xl font-bold text-blue-600">
-          BlogSite
+        BlogSphere
         </Link>
-        <Link to="/blogs" className="text-gray-700 hover:text-blue-600 transition">
-          Blogs
-        </Link>
+    
         <Link to="/admin" className="text-gray-700 hover:text-blue-600 transition">
           Create Blog
         </Link>
